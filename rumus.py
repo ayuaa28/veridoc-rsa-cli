@@ -1,6 +1,21 @@
 import random
 
 # 1. MODULAR ARITHMETIC
+
+def mod_pow(base: int, exp: int, mod: int) -> int:
+    """
+    Binary Modular Exponentiation: menghitung (base^exp) % mod
+    secara efisien dengan kompleksitas O(log exp).
+    """
+    result = 1
+    base = base % mod
+    while exp > 0:
+        if exp % 2 == 1:
+            result = (result * base) % mod
+        base = (base * base) % mod
+        exp //= 2
+    return result
+
 def gcd(a: int, b: int) -> int:
     """
     Cari Greates Common Divisor (FPB) menggunakan algoritma Euclidean.
