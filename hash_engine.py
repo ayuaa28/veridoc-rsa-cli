@@ -1,11 +1,6 @@
 import hashlib
 import math as py_math
-import importlib
-
-
-# Mengimpor file math.py
-rsa_math = importlib.import_module("math")
-
+import rumus as rsa_math
 
 def hash_message(message: str) -> int:
     """Menghasilkan integer dari hash SHA-256."""
