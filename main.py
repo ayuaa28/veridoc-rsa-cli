@@ -177,22 +177,36 @@ def run_simulation_menu():
         input("\nTekan Enter untuk kembali...")
         return
 
-    # Menerima input dokumen dan teks manipulasi secara langsung (Tanpa Default)
-    doc = input(f"Masukkan dokumen asli:\n{BOLD}> {CLR}")
+    # Cek apakah pengguna sudah pernah menandatangani dokumen di Menu 2
+    if current_state["last_document"]:
+        doc = current_state["last_document"]
+        print(f"Menggunakan dokumen dari Menu 2: {CYAN}\"{doc}\"{CLR}\n")
+    else:
+        # Jika belum pernah di Menu 2, baru minta input dokumen asli
+        doc = input(f"Masukkan dokumen asli:\n{BOLD}> {CLR}")
+        if not doc.strip():
+            print(f"\n{BOLD}{RED}[!] Dokumen tidak boleh kosong.{CLR}")
+            input("\nTekan Enter untuk kembali...")
+            return
+
+    # Cukup minta parameter manipulasi yang ingin diuji
     old_text = input(f"Teks yang ingin diubah pada dokumen:\n{BOLD}> {CLR}")
     new_text = input(f"Teks penggantinya:\n{BOLD}> {CLR}")
     extra_text = input(f"Teks tambahan (penambahan teks):\n{BOLD}> {CLR}")
     target_text = input(f"Teks yang ingin dihapus (penghapusan teks):\n{BOLD}> {CLR}")
 
     try:
-        # 1. Tandatangani dokumen asli terlebih dahulu
-        signature = hash_engine.sign_message(
-            doc, 
-            current_state["private_key"], 
-            current_state["crt_params"]
-        )
+        # Gunakan signature yang sudah ada jika ada, atau buat baru dari dokumen tersebut
+        if current_state["last_signature"] and current_state["last_document"] == doc:
+            signature = current_state["last_signature"]
+        else:
+            signature = hash_engine.sign_message(
+                doc, 
+                current_state["private_key"], 
+                current_state["crt_params"]
+            )
 
-        # 2. Jalankan fungsi simulasi tamper
+        # Jalankan simulasi tamper
         test_results = tamper_sim.run_tamper_test(
             document=doc,
             signature=signature,
