@@ -23,7 +23,7 @@ def gcd(a: int, b: int) -> int:
         a, b = b, a % b
     return a
 
-def extendgcd(a: int, b: int):
+def extgcd(a: int, b: int):
     """
     Extended Euclidean Algorithm: mencari g, x, y sedemikian hingga:
     a*x + b*y = gcd(a, b)
