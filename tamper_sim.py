@@ -1,4 +1,3 @@
-import rumus
 from hash_engine import sign_message, verify_message
 
 
@@ -11,7 +10,7 @@ def change_text(document: str, old_text: str, new_text: str) -> str:
 
 
 def add_text(document: str, extra_text: str) -> str:
-    """Menambahkan teks ke dokumen."""
+    """Menambahkan teks pada dokumen."""
     return document + extra_text
 
 
@@ -23,41 +22,54 @@ def delete_text(document: str, target_text: str) -> str:
     return document.replace(target_text, "", 1)
 
 
-def generate_tampered_documents(document: str) -> list[dict]:
-    """Membuat variasi dokumen untuk pengujian."""
+def generate_tampered_documents(
+    document: str,
+    old_text: str,
+    new_text: str,
+    extra_text: str,
+    target_text: str
+) -> list[dict]:
+    """Menghasilkan variasi dokumen untuk pengujian."""
     return [
         {
             "nama": "Dokumen asli",
             "isi": document
         },
         {
-            "nama": "Perubahan nilai",
-            "isi": change_text(document, "Nilai: 85", "Nilai: 95")
+            "nama": "Perubahan teks",
+            "isi": change_text(document, old_text, new_text)
         },
         {
             "nama": "Penambahan teks",
-            "isi": add_text(document, "\nCatatan: Dokumen direvisi.")
+            "isi": add_text(document, extra_text)
         },
         {
             "nama": "Penghapusan teks",
-            "isi": delete_text(document, "Status: Lulus")
+            "isi": delete_text(document, target_text)
         }
     ]
 
 
 def run_tamper_test(
     document: str,
-    private_key: dict,
+    signature: int,
     public_key: dict,
-    crt_params: dict
+    old_text: str,
+    new_text: str,
+    extra_text: str,
+    target_text: str
 ) -> list[dict]:
-    """Menguji tanda tangan dokumen asli dan dokumen yang diubah."""
+    """Memverifikasi dokumen asli dan dokumen hasil perubahan."""
 
-    signature = sign_message(document, private_key, crt_params)
-    test_documents = generate_tampered_documents(document)
+    test_documents = generate_tampered_documents(
+        document,
+        old_text,
+        new_text,
+        extra_text,
+        target_text
+    )
+
     results = []
-
-    print("\n=== RSA TAMPER SIMULATION ===")
 
     for test in test_documents:
         is_valid = verify_message(
@@ -66,18 +78,13 @@ def run_tamper_test(
             public_key
         )
 
-        status = "VALID" if is_valid else "INVALID"
-
-        result = {
+        results.append({
             "nama": test["nama"],
-            "status": status,
-            "valid": is_valid
-        }
-
-        results.append(result)
-
-        print(f"\nPengujian: {test['nama']}")
-        print(f"Isi dokumen:\n{test['isi']}")
-        print(f"Hasil verifikasi: {status}")
+            "isi": test["isi"],
+            "valid": is_valid,
+            "status": "VALID" if is_valid else "INVALID"
+        })
 
     return results
+
+coba ini yu, YAALLAH MAAF
