@@ -32,10 +32,10 @@ def clear_screen():
 
 def show_header():
     clear_screen()
-    print(f"{BLUE}╔══════════════════════════════════════════════════════════════════╗{CLR}")
-    print(f"{BLUE}║{CLR}                      {BOLD}{CYAN}VeriDoc VeriDoc RSA-CRT{CLR}                     {BLUE}║{CLR}")
-    print(f"{BLUE}║{CLR}     {DIM}Sistem Verifikasi Integritas Dokumen & Kriptografi RSA{CLR}       {BLUE}║{CLR}")
-    print(f"{BLUE}╚══════════════════════════════════════════════════════════════════╝{CLR}")
+    print(f"{BLUE}╔════════════════════════════════════════════════════════════╗{CLR}")
+    print(f"{BLUE}║{CLR}                       {BOLD}{CYAN}VeriDoc RSA-CRT{CLR}                      {BLUE}║{CLR}")
+    print(f"{BLUE}║{CLR}   {DIM}Sistem Verifikasi Integritas Dokumen & Kriptografi RSA{CLR}   {BLUE}║{CLR}")
+    print(f"{BLUE}╚════════════════════════════════════════════════════════════╝{CLR}")
 
 def print_box(title, content_list, color=CYAN):
     width = 66
